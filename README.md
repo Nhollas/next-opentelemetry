@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next Telemetry Project Setup
 
-## Getting Started
+This project is a Next.js application with OpenTelemetry integration for tracing and metrics collection. It uses Jaeger and OpenTelemetry Collector for tracing data visualization and collection.
 
-First, run the development server:
+## Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js (version 14 or later)
+- Docker and Docker Compose
+- yarn or npm
+
+## Installation
+
+1. Clone the repository to your local machine.
+
+2. Install the dependencies by running:
+
+```sh
+yarn install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+or if you are using npm:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3. Start the Jaeger and OpenTelemetry Collector services using Docker Compose:
 
-## Learn More
+```sh
+docker-compose -f infra/docker-compose.yaml up -d
+```
 
-To learn more about Next.js, take a look at the following resources:
+This will start the necessary tracing infrastructure in the background.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Viewing Jaeger Trace UI
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+To view the Jaeger Trace UI, open your browser and navigate to
 
-## Deploy on Vercel
+`http://localhost:16686`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Additional Information
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- The application's configuration can be found in [`next.config.mjs`](next.config.mjs).
+- TypeScript configuration is specified in [`tsconfig.json`](tsconfig.json).
+- For styling, Tailwind CSS is configured in [`tailwind.config.ts`](tailwind.config.ts).
+- Docker services for Jaeger and OpenTelemetry Collector are defined in [`infra/docker-compose.yaml`](infra/docker-compose.yaml).
+
+For more details on the project structure and components, refer to the individual files and directories in the repository.
