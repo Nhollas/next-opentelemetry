@@ -1,17 +1,24 @@
-import { NodeSDK } from "@opentelemetry/sdk-node"
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http"
 import { Resource } from "@opentelemetry/resources"
+import { NodeSDK } from "@opentelemetry/sdk-node"
+import {
+  BatchSpanProcessor,
+  SpanProcessor,
+} from "@opentelemetry/sdk-trace-node"
 import { SEMRESATTRS_SERVICE_NAME } from "@opentelemetry/semantic-conventions"
-import { SimpleSpanProcessor } from "@opentelemetry/sdk-trace-node"
+
+export function getProcessor(): SpanProcessor {
+  const exporter = new OTLPTraceExporter({
+    url: "http://localhost:8080/v1/traces",
+  })
+
+  return new BatchSpanProcessor(exporter)
+}
 
 const sdk = new NodeSDK({
   resource: new Resource({
-    [SEMRESATTRS_SERVICE_NAME]: "next-app-backend",
+    [SEMRESATTRS_SERVICE_NAME]: "next-app",
   }),
-  spanProcessor: new SimpleSpanProcessor(
-    new OTLPTraceExporter({
-      url: "http://localhost:8080/v1/traces",
-    }),
-  ),
+  spanProcessors: [getProcessor()],
 })
 sdk.start()
