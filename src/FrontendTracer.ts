@@ -6,12 +6,12 @@ import {
 import { WebTracerProvider } from "@opentelemetry/sdk-trace-web"
 import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-base"
 import { registerInstrumentations } from "@opentelemetry/instrumentation"
-import { getWebAutoInstrumentations } from "@opentelemetry/auto-instrumentations-web"
 import { Resource, browserDetector } from "@opentelemetry/resources"
 import { SEMRESATTRS_SERVICE_NAME } from "@opentelemetry/semantic-conventions"
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http"
 import { detectResourcesSync } from "@opentelemetry/resources/build/src/detect-resources"
 import { ZoneContextManager } from "@opentelemetry/context-zone"
+import { FetchInstrumentation } from "@opentelemetry/instrumentation-fetch"
 
 const FrontendTracer = () => {
   let resource = new Resource({
@@ -50,14 +50,9 @@ const FrontendTracer = () => {
   registerInstrumentations({
     tracerProvider: provider,
     instrumentations: [
-      getWebAutoInstrumentations({
-        "@opentelemetry/instrumentation-fetch": {
-          propagateTraceHeaderCorsUrls: /.*/,
-          clearTimingResources: true,
-        },
-        "@opentelemetry/instrumentation-user-interaction": {
-          enabled: false,
-        },
+      new FetchInstrumentation({
+        propagateTraceHeaderCorsUrls: /.*/,
+        clearTimingResources: true,
       }),
     ],
   })

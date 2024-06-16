@@ -17,7 +17,7 @@ export function getProcessor(): SpanProcessor {
 
 const sdk = new NodeSDK({
   resource: new Resource({
-    [SEMRESATTRS_SERVICE_NAME]: "next-app",
+    [SEMRESATTRS_SERVICE_NAME]: "next-app-backend",
   }),
   spanProcessors: [getProcessor()],
 })
